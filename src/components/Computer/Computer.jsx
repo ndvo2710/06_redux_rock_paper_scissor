@@ -1,14 +1,16 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux';
 
-export default class Computer extends Component {
+class Computer extends Component {
     render() {
+        const { computer } = this.props;
         return (
             <div className="text-center playerGame">
                 <div className="theThink">
                     <img
                         style={{ transform: 'rotate(120deg' }}
-                        src="./img/rock.png"
-                        alt="rock.png"
+                        src={computer.img}
+                        alt={`${computer.id}.png`}
                         className="mt-3"
                         width={100}
                         height={100}
@@ -20,3 +22,11 @@ export default class Computer extends Component {
         )
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        computer: state.rpsGameReducer.computer
+    }
+}
+
+export default connect(mapStateToProps)(Computer);
