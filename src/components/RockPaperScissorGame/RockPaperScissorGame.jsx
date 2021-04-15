@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux';
 import Computer from '../Computer/Computer'
 import GameResult from '../GameResult/GameResult'
 import Player from '../Player/Player';
 import "./RockPaperScissorGame.css";
 
 
-export default class RockPaperScissorGame extends Component {
+class RockPaperScissorGame extends Component {
     render() {
         return (
             <div className="rockPaperScissorGame">
@@ -15,7 +16,9 @@ export default class RockPaperScissorGame extends Component {
                     </div>
                     <div className="col-4 mt-3">
                         <GameResult />
-                        <button className="btn btn-success p-2 display-4 mt-5">
+                        <button onClick={() => {
+                            this.props.playGame();
+                        }} className="btn btn-success p-2 display-4 mt-5">
                             Play Game
                         </button>
                     </div>
@@ -27,3 +30,25 @@ export default class RockPaperScissorGame extends Component {
         )
     }
 }
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        playGame: () => {
+            let count = 0;
+            let randomComputerItem = setInterval(() => {
+                dispatch({
+                    type: 'RANDOM'
+                })
+                count++;
+                if (count > 10) {
+                    clearInterval(randomComputerItem)
+                    dispatch({
+                        type: 'END_GAME'
+                    })
+                }
+            }, 100)
+        }
+    }
+}
+
+export default connect(null, mapDispatchToProps)(RockPaperScissorGame)
